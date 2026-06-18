@@ -34,7 +34,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 3px solid #b5c7d3; /* 파스텔 블루톤 테두리 */
+            border: 3px solid #b5c7d3;
             border-radius: 15px;
             margin-bottom: 30px;
             overflow: hidden;
@@ -122,7 +122,7 @@
             border-right: none;
         }
         th {
-            background-color: #eef4f8; /* 파스텔 블루 헤더 */
+            background-color: #eef4f8;
             width: 120px;
             text-align: center;
             font-size: 17px;
@@ -169,7 +169,7 @@
             margin-top: 40px;
         }
         .print-btn {
-            background-color: #ffb8b8; /* 파스텔 핑크 버튼 */
+            background-color: #ffb8b8;
             color: white;
             border: none;
             padding: 14px 28px;
@@ -185,28 +185,28 @@
             transform: translateY(-2px);
         }
 
-        /* 플로팅 봇 컨테이너 */
+        /* 봇 컨테이너 및 공통 스타일 */
         .bot-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             z-index: 1000;
         }
-
-        /* 봇 버튼 공통 스타일 */
         .floating-bot {
             color: #fff;
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
         }
@@ -214,53 +214,54 @@
             transform: translateY(-5px) scale(1.05);
         }
         
-        /* 봇별 색상 */
-        .suno-bot {
-            background-color: #a0d8ef; /* 파스텔 하늘색 */
-            box-shadow: 0 6px 15px rgba(160, 216, 239, 0.5);
-        }
-        .suno-bot:hover {
-            box-shadow: 0 8px 20px rgba(160, 216, 239, 0.7);
-        }
-        .share-bot {
-            background-color: #b8e0d2; /* 파스텔 민트색 */
-            box-shadow: 0 6px 15px rgba(184, 224, 210, 0.5);
-        }
-        .share-bot:hover {
-            box-shadow: 0 8px 20px rgba(184, 224, 210, 0.7);
-        }
+        /* 봇별 파스텔 색상 */
+        .genre-bot { background-color: #dcb5f5; box-shadow: 0 5px 15px rgba(220, 181, 245, 0.5); }
+        .genre-bot:hover { box-shadow: 0 8px 20px rgba(220, 181, 245, 0.7); }
+        
+        .mood-bot { background-color: #fce38a; color: #d4a300; box-shadow: 0 5px 15px rgba(252, 227, 138, 0.5); }
+        .mood-bot:hover { box-shadow: 0 8px 20px rgba(252, 227, 138, 0.7); }
+
+        .suno-bot { background-color: #a0d8ef; box-shadow: 0 5px 15px rgba(160, 216, 239, 0.5); }
+        .suno-bot:hover { box-shadow: 0 8px 20px rgba(160, 216, 239, 0.7); }
+        
+        .share-bot { background-color: #b8e0d2; box-shadow: 0 5px 15px rgba(184, 224, 210, 0.5); }
+        .share-bot:hover { box-shadow: 0 8px 20px rgba(184, 224, 210, 0.7); }
 
         .floating-bot span.icon {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 2px;
         }
         .floating-bot span.text {
             font-family: 'GangwonEdu', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
         }
 
-        /* 말풍선 공통 스타일 */
+        /* 말풍선 스타일 (마우스를 올렸을 때만 보이도록 수정하여 깔끔하게) */
         .speech-bubble {
             position: absolute;
-            right: 110px; /* 봇 왼쪽에 위치 */
+            right: 100px;
             top: 50%;
             transform: translateY(-50%);
             background: #fff;
             color: #5c7c92;
-            padding: 12px 18px;
-            border-radius: 15px;
-            font-size: 15px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: bold;
             white-space: nowrap;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             border: 2px solid #b5c7d3;
-            animation: float-bubble 2.5s infinite ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
             pointer-events: none;
         }
-        
-        /* 꼬리표 (오른쪽 화살표) */
+        .floating-bot:hover .speech-bubble {
+            opacity: 1;
+            visibility: visible;
+        }
         .speech-bubble::after {
             content: '';
             position: absolute;
@@ -283,11 +284,65 @@
             z-index: 1;
         }
 
-        /* 말풍선 둥둥 애니메이션 */
-        @keyframes float-bubble {
-            0%, 100% { transform: translateY(-50%); }
-            50% { transform: translateY(-60%); }
+        /* 팝업(모달) 스타일 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
         }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #b5c7d3;
+            transition: color 0.2s;
+        }
+        .close-btn:hover { color: #5c7c92; }
+        .modal-title {
+            margin-top: 0;
+            color: #5c7c92;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px dashed #eef4f8;
+            padding-bottom: 10px;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .tag {
+            background: #f4f8fb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #5c7c92;
+            font-size: 15px;
+            font-weight: bold;
+            border: 1px solid #b5c7d3;
+        }
+        .tag span { color: #888; font-size: 13px; font-weight: normal; margin-left: 4px; }
 
         /* 인쇄 시 스타일 */
         @media print {
@@ -306,9 +361,7 @@
             .print-btn, .bot-container { 
                 display: none !important;
             }
-            textarea {
-                resize: none;
-            }
+            textarea { resize: none; }
         }
     </style>
 </head>
@@ -372,7 +425,7 @@
                 <th>노래 스타일</th>
                 <td>
                     <div class="hint">예시) 명랑하고 밝은 분위기, 신나는 K-pop, 빠른 템포 등</div>
-                    <textarea rows="3" placeholder="만들고 싶은 노래의 분위기를 적어보세요 🎤"></textarea>
+                    <textarea rows="3" placeholder="우측 하단의 봇을 눌러 장르와 분위기를 참고해보세요! 🎸🌈"></textarea>
                 </td>
             </tr>
         </table>
@@ -386,20 +439,91 @@
 
 <!-- 플로팅 봇 컨테이너 (우측 하단) -->
 <div class="bot-container">
+    
+    <!-- 장르 설명 봇 -->
+    <button class="floating-bot genre-bot" onclick="openModal('genreModal')">
+        <div class="speech-bubble">추천 음악 장르 보기 🎸</div>
+        <span class="icon">🎸</span>
+        <span class="text">장르 안내</span>
+    </button>
+
+    <!-- 분위기 설명 봇 -->
+    <button class="floating-bot mood-bot" onclick="openModal('moodModal')">
+        <div class="speech-bubble">노래 분위기 단어 보기 🌈</div>
+        <span class="icon">🌈</span>
+        <span class="text">분위기 안내</span>
+    </button>
+
     <!-- SUNO 작곡 봇 -->
-    <a href="https://suno.com" target="_blank" class="floating-bot suno-bot" title="SUNO AI 사이트로 이동">
-        <div class="speech-bubble">가사를 다 썼다면 날 눌러줘!<br>노래로 만들어줄게 🎶</div>
+    <a href="https://suno.com" target="_blank" class="floating-bot suno-bot">
+        <div class="speech-bubble">가사를 다 썼다면 날 눌러줘! 🎶</div>
         <span class="icon">🤖</span>
         <span class="text">SUNO GO!</span>
     </a>
 
     <!-- Padlet 결과 공유 봇 -->
-    <a href="https://padlet.com/zpr1120/padlet-ak4p03vb9fhe5jy2" target="_blank" class="floating-bot share-bot" title="결과 공유 패들렛으로 이동">
-        <div class="speech-bubble">완성된 노래는<br>여기에 자랑해줘! 🎧</div>
+    <a href="https://padlet.com/zpr1120/padlet-ak4p03vb9fhe5jy2" target="_blank" class="floating-bot share-bot">
+        <div class="speech-bubble">완성된 노래를 자랑해줘! 🎧</div>
         <span class="icon">✨</span>
         <span class="text">공유하기</span>
     </a>
+
 </div>
+
+<!-- 장르 안내 팝업(모달) -->
+<div id="genreModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'genreModal')">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('genreModal')">&times;</span>
+        <h2 class="modal-title">🎸 추천 음악 장르 (Genre)</h2>
+        <div class="tag-container">
+            <div class="tag">K-pop <span>(아이돌)</span></div>
+            <div class="tag">Dance <span>(댄스)</span></div>
+            <div class="tag">Hip hop <span>(랩)</span></div>
+            <div class="tag">Ballad <span>(발라드)</span></div>
+            <div class="tag">Rock <span>(락)</span></div>
+            <div class="tag">Jazz <span>(재즈)</span></div>
+            <div class="tag">Acoustic <span>(기타)</span></div>
+            <div class="tag">Kids music <span>(어린이 음악)</span></div>
+            <div class="tag">Electronic <span>(전자 음악)</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- 분위기 안내 팝업(모달) -->
+<div id="moodModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'moodModal')">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('moodModal')">&times;</span>
+        <h2 class="modal-title">🌈 추천 노래 분위기 (Mood)</h2>
+        <div class="tag-container">
+            <div class="tag">Female <span>(여성 보컬)</span></div>
+            <div class="tag">Male <span>(남성 보컬)</span></div>
+            <div class="tag">Children <span>(어린이 보컬)</span></div>
+            <div class="tag">Cute <span>(귀여움)</span></div>
+            <div class="tag">Sad <span>(슬픔)</span></div>
+            <div class="tag">Powerful <span>(힘찬)</span></div>
+            <div class="tag">Piano <span>(피아노)</span></div>
+            <div class="tag">Upbeat <span>(신나는)</span></div>
+            <div class="tag">Emotional <span>(감성적인)</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 팝업 열기
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+    // 팝업 닫기 (X 버튼)
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+    // 팝업 바깥 영역 클릭 시 닫기
+    function closeModalOnOutsideClick(event, modalId) {
+        if (event.target.id === modalId) {
+            closeModal(modalId);
+        }
+    }
+</script>
 
 </body>
 </html>
